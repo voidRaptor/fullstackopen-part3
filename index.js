@@ -52,6 +52,23 @@ app.get("/api/persons/:id", (req, res) => {
 })
 
 
+app.delete("/api/persons/:id", (req, res) => {
+  const id = req.params.id
+  const index = persons.findIndex(p => p.id == id)
+
+  if (index != -1) {
+    persons.splice(index, 1)
+    res.status(200).end()
+
+  } else {
+    res.status(404).end()
+  }
+
+})
+
+
+
+
 const PORT = 3001
 
 app.listen(PORT, () => {
