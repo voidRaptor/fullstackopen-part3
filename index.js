@@ -26,6 +26,11 @@ let persons = [
 ]
 
 
+app.get("/info", (req, res) =>  {
+  const count = `<p>Phonebook has info for ${persons.length} people</p>`
+  const date = `<p>${new Date().toUTCString()}</p>`
+  res.send(count + date)
+})
 
 
 app.get("/api/persons", (req, res) => {
