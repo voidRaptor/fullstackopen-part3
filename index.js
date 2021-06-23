@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 
 let persons = [
   {
@@ -24,6 +26,24 @@ let persons = [
     "id": 4
   }
 ]
+
+
+const randomMinMax = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+const uniqueID = () => {
+  let id = 0
+
+  do {
+    id = randomMinMax(1, Number.MAX_SAFE_INTEGER)
+
+  } while ( persons.some(item => item.id == id) )
+
+  return id
+}
 
 
 app.get("/info", (req, res) =>  {
@@ -66,6 +86,19 @@ app.delete("/api/persons/:id", (req, res) => {
 
 })
 
+
+app.post("/api/persons", (req, res) => {
+  const obj = Object(req.body)
+  const keys = Object.keys(obj)
+
+  const name = obj[keys[0]]
+  const number = obj[keys[1]]
+  const id = uniqueID()
+
+  persons.push({name, number, id})
+
+  res.status(200).end()
+})
 
 
 
