@@ -91,8 +91,23 @@ app.post("/api/persons", (req, res) => {
   const obj = Object(req.body)
   const keys = Object.keys(obj)
 
+  if (keys.length != 2) {
+    res.status(400)
+    res.json({ "error": "name or number is missing" })
+    res.end()
+    return
+  }
+
   const name = obj[keys[0]]
   const number = obj[keys[1]]
+
+  if (persons.some(item => item.name == name)) {
+    res.status(400)
+    res.json({ "error": "name must be unique" })
+    res.end()
+    return
+  }
+
   const id = uniqueID()
 
   persons.push({name, number, id})
